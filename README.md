@@ -8,7 +8,7 @@ To run it: clone the repository, run `npm install`, add your own PostgreSQL conn
 
 I am working with a small tortilla-making company in Japan. I notice how much effort they put into record-keeping—wasting a great deal of time in the process—and how they often make errors when indexing the data. I want to streamline their entire workflow while gaining experience in developing business software solutions; that is why I started this project.
 
-[Software Demo Video](http://youtube.link.goes.here)
+[Software Demo Video](https://youtu.be/0gqL2wvpyvg)
 
 # Relational Database
 
