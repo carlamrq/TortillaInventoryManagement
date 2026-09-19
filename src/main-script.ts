@@ -10,35 +10,55 @@
 import { prisma } from './db';
 
 async function main() {
-    // INSERT: Create a new client
-    const customer = await prisma.customer.create({
-        data: {
-            name: "Tortilla client 1",
-            contact: "client1@email.com",
-        },
+    // INSERT: Create a new client if it doesn't exist
+    let customer = await prisma.customer.findFirst({
+        where: { name: "Tortilla client 1" },
     });
-    console.log("Customer created:", customer);
+    if (!customer) {
+        customer = await prisma.customer.create({
+            data: {
+                name: "Tortilla client 1",
+                contact: "client1@email.com",
+            },
+        });
+        console.log("New customer created:", customer);
+    } else {
+        console.log("Customer already exists:", customer);
+    }
 
-    // INSERT: Create 2 new product in the inventory
-    const product = await prisma.product.create({
-        data: {
-            name: "Blue Corn Tortilla",
-            price: 49.90,
-            inventory: { create: { quantity: 100 } }, //nested write to create inventory record along with product
-        },
-        include: { inventory: true }, //include the inventory record in the response
+    // INSERT: Create 2 new product in the inventory if they don't exist, and include the inventory record in the response
+    let product = await prisma.product.findFirst({
+        where: { name: "Blue Corn Tortilla" },
     });
-    console.log("Product created:", product);
+    if (!product) {
+        product = await prisma.product.create({
+            data: {
+                name: "Blue Corn Tortilla",
+                price: 49.90,
+                inventory: { create: { quantity: 100 } }, //nested write, to create inventory record along with product
+            },
+            include: { inventory: true }, //include the inventory record in the response
+        });
+    } else {
+        console.log("Product already exists:", product);
+    }
 
-    const product2 = await prisma.product.create({
-        data: {
-            name: "White Corn Tortilla",
-            price: 39.90,
-            inventory: { create: { quantity: 200 } },
-        },
-        include: { inventory: true },
+    let product3 = await prisma.product.findFirst({
+        where: { name: "Pink Corn Tortilla" },
     });
-    console.log("Product created:", product2);
+    if (!product3) {
+        product3 = await prisma.product.create({
+            data: {
+                name: "Pink Corn Tortilla",
+                price: 39.90,
+                inventory: { create: { quantity: 200 } },
+            },
+            include: { inventory: true },
+        });
+        console.log("Product created:", product3);
+    } else {
+        console.log("Product already exists:", product3);
+    }
 
     // INSERT: Create a new order for the customer
     const order = await prisma.order.create({
@@ -47,7 +67,7 @@ async function main() {
             items: {
                 create: [
                     { productId: product.id, quantity: 5 }, 
-                    { productId: product2.id, quantity: 10 },
+                    { productId: product3.id, quantity: 10 },
                 ],
             },
         },
@@ -71,7 +91,7 @@ async function main() {
     });
 
     await prisma.inventory.update({
-        where: { productId: product2.id },
+        where: { productId: product3.id },
         data: { quantity: { decrement: 10 } },
     });
     
