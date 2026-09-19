@@ -5,13 +5,12 @@
 //a multi-connection link and a direct link for `CREATE` and `UPDATE` operations.
 
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 /// A customer who places orders.

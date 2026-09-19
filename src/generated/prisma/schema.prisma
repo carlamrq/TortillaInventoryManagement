@@ -1,7 +1,8 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+//Prispa schema model file
 
-// Get a free hosted Postgres database in seconds: `npx create-db`
+//First, the TypeScript client and the folder Prisma will use to store the generated code are created. 
+//Then, the `datasource` contains the database connection—specifically,
+//a multi-connection link and a direct link for `CREATE` and `UPDATE` operations.
 
 generator client {
   provider = "prisma-client-js"
@@ -12,9 +13,54 @@ datasource db {
   provider = "postgresql"
 }
 
-model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  name      String?
-  createdAt DateTime @default(now())
+/// A customer who places orders.
+// @id is the primary key, ? is an optional string
+
+model Customer {
+  id      Int     @id @default(autoincrement())
+  name    String
+  contact String?
+  orders  Order[]
+}
+
+///A product the company sells
+//Inventory? : one-to-one relationship
+
+model Product {
+  id         Int         @id @default(autoincrement())
+  name       String
+  price      Float
+  inventory  Inventory? //each product has at most one stock record
+  orderItems OrderItem[]
+}
+
+///Current stock level for a single product.
+///One-to-one with Product, that is why productId is @unique.
+
+model Inventory {
+  id        Int     @id @default(autoincrement())
+  quantity  Int
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int     @unique
+}
+
+model Order {
+  id         Int         @id @default(autoincrement())
+  date       DateTime    @default(now())
+  status     String      @default("pending")
+  customer   Customer    @relation(fields: [customerId], references: [id])
+  customerId Int
+  items      OrderItem[]
+}
+
+///A single line item within an order, connects Order and Product
+//an order can include many products, and a product can appear in many orders
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  quantity  Int
+  order     Order   @relation(fields: [orderId], references: [id])
+  orderId   Int
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
 }
