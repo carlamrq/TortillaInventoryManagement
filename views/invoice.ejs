@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice #<%= order.id %> - Tortilla Co.</title>
+</head>
+    <link rel="stylesheet" href="/css/style.css">
+<body>
+    <h1>Invoice #<%= order.id %></h1>
+    <p><strong>Client:</strong> <%= order.customer.name %> (<%= order.customer.contact %>)</p>
+    <p><strong>Date:</stronG> <%= order.date.toLocaleDateString() %> </p>
+    <p><strong>Status:</strong> <%= order.status %></p>
+
+    <table border="1" cellpadding="8">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Unit price</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% order.items.forEach(function(item) { %>
+                <tr>
+                    <td><%= item.product.name %></td>
+                    <td><%= item.product.price %></td>
+                    <td><%= item.quantity %></td>
+                    <td><%= (item.quantity * item.product.price).toFixed(2) %></td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+
+    <h2>Total: $<%= total.toFixed(2) %></h2>
+
+    <p><a href="/orders">&larr; Back to Orders</a></p>
+</body>
+</html>

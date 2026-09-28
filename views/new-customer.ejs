@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Client - Tortilla.Co</title>
+</head>
+    <link rel="stylesheet" href="/css/style.css">
+<body>
+    <h1>Create a New Client</h1>
+    <form method="POST" action="/customer/new">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="contact">Contact information:</label>
+        <input type="text" id="contact" name="contact" required>
+
+        <button type="submit">Submit New Customer</button>
+    </form>
+</body>
+</html>

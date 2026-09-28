@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New order - Tortilla Co.</title>
+</head>
+    <link rel="stylesheet" href="/css/style.css">
+<body>
+    <h1>Create New Order</h1>
+
+    <form method="POST" action="/orders/new">
+        <label for="customerId">Client:</label>
+        <select name="customerId" id="customerId" required>
+            <option value="" disabled selected>Select a client</option>
+            <!--This insert a option with the name of each customer-->
+            <% customers.forEach(function(customer) { %>
+                <option value="<%= customer.id %>"><%= customer.name%></option>
+            <% }); %>
+        </select>
+
+        <h3>Products:</h3>
+        <% products.forEach(function(product) { %>
+            <div>
+                <label>
+                    <%= product.name %> ($<%= product.price %>) - Quantity:
+                    <input type="number" name="quantity_<%= product.id %>" min="0" value="0">
+                </label>
+                <% if (product.inventory && product.inventory.quantity < 10) { %>
+                    <span style="color:red;">Low stock!</span>
+                <% } %>
+            </div>
+        <% }); %>
+        <button type="submit">Create Order</button>
+    </form>
+
+    <p><a href="/orders">&larr; Back to Orders</a></p>
+</body>
+</html>
