@@ -143,7 +143,7 @@ app.get('/product/new', (req, res) => {
     res.render('new-product');
 });
 
-//POST new product (with validation + nested Inventory create)
+//POST new product 
 app.post('/product/new', async (req, res) => {
     const { name, price, quantity } = req.body;
 
